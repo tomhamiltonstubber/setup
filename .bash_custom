@@ -1,0 +1,115 @@
+# Set the default editor to vim.
+export EDITOR=micro
+
+# Bash history size
+HISTSIZE=100000
+HISTFILESIZE=200000
+
+# Avoid succesive duplicates in the bash command history.
+export HISTCONTROL=ignoredups
+
+# Append commands to the bash command history file (~/.bash_history)
+# instead of overwriting it.
+shopt -s histappend
+
+# Append commands to the history every time a prompt is shown,
+# instead of after closing the session.
+PROMPT_COMMAND='history -a'
+
+# Bash primary prompt
+export PS1='\[\e[0;32m\]\u:\W\e[0m || '
+
+######################
+### Bash title bar ###
+######################
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
+
+    # Show the currently running command in the terminal title:
+    # http://www.davidpashley.com/articles/xterm-titles-with-bash.html
+    show_command_in_title_bar()
+    {
+        case "$BASH_COMMAND" in
+            *\033]0*)
+                # The command is trying to set the title bar as well;
+                # this is most likely the execution of $PROMPT_COMMAND.
+                # In any case nested escapes confuse the terminal, so don't
+                # output them.
+                ;;
+            *)
+                echo -ne "\033]0;${BASH_COMMAND}\007"
+                ;;
+        esac
+    }
+    trap show_command_in_title_bar DEBUG
+    ;;
+*)
+    ;;
+esac
+
+###############
+### Aliases ###
+###############
+
+# Python shortcuts
+alias dpyc="find ../ -name '*.pyc' -delete"
+
+# Jekyll shortcuts
+alias js="bundle exec jekyll serve"
+alias jsq="bundle exec jekyll serve --config _config.yml,_quick_config.yml"
+
+alias tc="cd ~/repos/tutorcruncher.com/"
+
+# Ubuntu Shortcuts
+alias UU="sudo apt update -y"
+alias UUU="sudo apt upgrade -y"
+alias untargz="tar -xzvf"
+alias untarbz="tar -xjvf"
+alias untar="tar -xf"
+
+# Django Shortcuts
+alias src="source env/bin/activate"
+alias rs="./manage.py runserver"
+alias hd="./manage.py rqworker high default low long"
+alias migrate="time python manage.py migrate"
+alias pipr="pip install -r requirements.txt"
+alias lsh="source env/bin/activate && python manage.py shell_plus"
+alias hsh="heroku run python manage.py shell_plus"
+
+# TC2 Shorcuts
+alias AA="cd ~/repos/AATutorCruncher/ && source env/bin/activate"
+alias rdcd="./manage.py reset_database --create-demo-agency --su-password testing"
+alias hrrdcd="heroku run --app angrypenguin ./manage.py reset_database --create-demo-agency"
+alias piprr="pip install -r requirements.txt && pip install -r ./test_extras/requirements.txt"
+alias plt="time ./test_extras/lint.sh"
+alias genjs="time ./manage.py genjs"
+alias deployap="./scripts/deploy.py --force-push --dont-migrate --app angrypenguin"
+alias deployapmigs="./scripts/deploy.py --force-push --app angrypenguin"
+
+alias rqtest="ASYNC_RQ=False ./manage.py rq_test"
+alias ptest="DJDB=False ASYNC_RQ=False pytest --reuse-db -n 3 --tb=native"
+alias pktest="DJDB=False ASYNC_RQ=False pytest -n 3 --tb=native"
+
+# TC2 Heroku backup Shortcuts
+alias hrbus="heroku pg:backups"
+alias res="./scripts/resetdb.sh && pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d tutorcruncher2 ./a"
+alias awscp="time aws s3 cp ./a s3://tutorcruncher-db-backups/ --region eu-west-1"
+
+# Git shortcuts
+alias gl="git log2"
+alias gs="git status"
+alias gp="git pull"
+alias gc="git checkout "
+
+# Script shortcuts
+alias gm="python3 ~/repos/checkout_master_check_dumps.py"
+alias gb="python3 ~/repos/branch_checkout.py"
+alias gcpr="~/repos/checkout_pr.sh"
+
+# TC Variables
+export ASYNC_RQ="TRUE"
+export DJ_DEBUG="TRUE"
+export DJDB="TRUE"
