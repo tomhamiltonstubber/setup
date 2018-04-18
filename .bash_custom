@@ -91,8 +91,8 @@ alias deployap="./scripts/deploy.py --force-push --dont-migrate --app angrypengu
 alias deployapmigs="./scripts/deploy.py --force-push --app angrypenguin"
 
 alias rqtest="ASYNC_RQ=False ./manage.py rq_test"
-alias ptest="DJDB=False ASYNC_RQ=False pytest --reuse-db -n 3 --tb=native"
-alias pktest="DJDB=False ASYNC_RQ=False pytest -n 3 --tb=native"
+alias ptest="DJDB=False ASYNC_RQ=False pytest --reuse-db -n 8 --tb=native"
+alias pktest="DJDB=False ASYNC_RQ=False pytest -n 8 --tb=native"
 
 # TC2 Heroku backup Shortcuts
 alias hrbus="heroku pg:backups"

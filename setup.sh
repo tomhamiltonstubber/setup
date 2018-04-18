@@ -5,12 +5,16 @@ echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sou
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
 sudo apt-get update
-sudo apt-get install google-chrome-stable xclip git sublime-text python-pip git vim unzip python-dev python3.6-dev libjpeg-dev libmemcached-dev postgresql-client postgresql postgresql-contrib redis-server libfreetype6-dev libffi-dev postgresql-server-dev-10 curl
+sudo apt-get install \
+google-chrome-stable xclip git sublime-text python-pip git vim unzip python-dev \
+python3.6-dev libjpeg-dev libmemcached-dev postgresql-client postgresql \
+postgresql-contrib redis-server libfreetype6-dev libffi-dev postgresql-server-dev-10 \
+curl gnome-tweak-tool chrome-gnome-shell compizconfig-settings-manager
 
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 sudo apt-get install yarn
 
-sudo pip install virtualenv
+sudo pip install virtualenv devtools awscli
 sudo snap install micro --classic
 sudo snap install spotify
 sudo snap install heroku --classic
