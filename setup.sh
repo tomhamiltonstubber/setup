@@ -18,6 +18,7 @@ sudo pip install virtualenv devtools awscli
 sudo snap install micro --classic
 sudo snap install spotify
 sudo snap install heroku --classic
+sudo snap install pycharm-professional --classic
 
 mkdir repos
 cd repos/
@@ -27,11 +28,12 @@ xclip -sel clip < ~/.ssh/id_rsa.pub
 gpg --full-generate-key
 gpg --list-secret-keys --keyid-format LONG
 
-git clone git@github.com:tomhamiltonstubber/setup.git .
-git clone git@github.com:tutorcruncher/TutorCruncher2 AATutorCruncher
-git clone git@github.com:tutorcruncher/TutorCruncher2 TC2
-git clone git@github.com:tutorcruncher/socket-server
-git clone git@github.com:tutorcruncher/socket-frontend
-git clone git@github.com:tutorcruncher/help.tutorcruncher.com
-git clone git@github.com:tutorcruncher/dinotutors.com
-git clone git@github.com:samuelcolvin/byt.co.uk
+# git clone git@github.com:tomhamiltonstubber/setup.git . && \
+git clone git@github.com:tomhamiltonstubber/salsa-verde.git . && \
+git clone git@github.com:tutorcruncher/TutorCruncher2 AATutorCruncher && \
+git clone git@github.com:tutorcruncher/TutorCruncher2 TC2 && \
+git clone git@github.com:tutorcruncher/socket-server && \
+git clone git@github.com:tutorcruncher/socket-frontend && \
+git clone git@github.com:tutorcruncher/help.tutorcruncher.com && \
+git clone git@github.com:tutorcruncher/dinotutors.com && \
+git clone git@github.com:samuelcolvin/byt.co.uk && \
