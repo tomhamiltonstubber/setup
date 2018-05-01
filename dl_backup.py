@@ -15,7 +15,11 @@ def main():
     selected_id = input(f'Select the ID [{default_id}]: ') or default_id
     file_name = f'{selected_id}-{dict(lines)[selected_id]}.dump'
     print('Download backup:', selected_id)
-    subprocess.run(f'curl -o ./AATutorCruncher/{file_name} `heroku pg:backups:url {selected_id}` ', shell=True)
+    path = './AATutorCruncher/'
+    subprocess.run(f'curl -o {path}{file_name} `heroku pg:backups:url {selected_id}` ', shell=True)
+    print('Restoring DB')
+    subprocess.run(
+        f'{path}scripts/resetdb.sh && pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d tutorcruncher2 {path}{file_name}')
 
 if __name__ == '__main__':
 	main()
