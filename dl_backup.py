@@ -19,7 +19,8 @@ def main():
     subprocess.run(f'curl -o {path}{file_name} `heroku pg:backups:url {selected_id}` ', shell=True)
     print('Restoring DB')
     subprocess.run(
-        f'{path}scripts/resetdb.sh && pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d tutorcruncher2 {path}{file_name}')
+        f'{path}scripts/resetdb.sh && pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d tutorcruncher2 ../{path}{file_name}'
+    )
 
 if __name__ == '__main__':
 	main()
