@@ -2,11 +2,12 @@
 export EDITOR=micro
 
 # Bash history size
-HISTSIZE=100000
-HISTFILESIZE=200000
+HISTSIZE=-1
+HISTFILESIZE=-1
 
 # Avoid succesive duplicates in the bash command history.
-export HISTCONTROL='git stash pop'
+export HISTCONTROL=ignoreboth:erasedups
+export HISTIGNORE='git stash pop'
 
 # Append commands to the bash command history file (~/.bash_history)
 # instead of overwriting it.
@@ -18,7 +19,6 @@ PROMPT_COMMAND='history -a'
 
 # Bash primary prompt
 export PS1='\[\e[0;32m\]\u:\W\e[0m || '
-export PS1='\u:\W || '
 
 ######################
 ### Bash title bar ###
@@ -62,14 +62,7 @@ alias dpyc="find ../ -name '*.pyc' -delete"
 alias js="bundle exec jekyll serve"
 alias jsq="bundle exec jekyll serve --config _config.yml,_quick_config.yml"
 
-alias tc="cd ~/repos/tutorcruncher.com/"
-
-# Ubuntu Shortcuts
-alias UU="sudo apt update -y"
-alias UUU="sudo apt upgrade -y"
-alias untargz="tar -xzvf"
-alias untarbz="tar -xjvf"
-alias untar="tar -xf"
+alias tc="cd ~/repos/tutorcruncher.com/ && source env/bin/activate"
 
 # Django Shortcuts
 alias src="source env/bin/activate"
@@ -87,6 +80,7 @@ alias hrrdcd="heroku run --app angrypenguin ./manage.py reset_database --create-
 alias piprr="pip install -r requirements.txt && pip install -r ./test_extras/requirements.txt"
 alias plt="time ./test_extras/lint.sh"
 alias genjs="time ./manage.py genjs"
+alias yjs="yarn main-watch"
 alias deployap="./scripts/deploy.py --force-push --dont-migrate --app angrypenguin"
 alias deployapmigs="./scripts/deploy.py --force-push --app angrypenguin"
 
