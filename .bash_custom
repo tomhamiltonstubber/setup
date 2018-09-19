@@ -98,6 +98,9 @@ alias hrbus="heroku pg:backups"
 alias res="./scripts/resetdb.sh && pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d tutorcruncher2 ./a"
 alias awscp="time aws s3 cp ./a s3://tutorcruncher-db-backups/ --region eu-west-1"
 
+# SV Shortcuts
+alias SV="cd ~/repos/salsa-verde/ && source env/bin/activate"
+
 # Git shortcuts
 alias gl="git log2"
 alias gs="git status"
