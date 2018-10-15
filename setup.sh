@@ -15,7 +15,8 @@ curl gnome-tweak-tool chrome-gnome-shell compizconfig-settings-manager peek
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 sudo apt-get install yarn
 
-sudo pip install virtualenv devtools awscli
+sudo pip install virtualenv awscli
+sudo pip3 install devtools
 sudo snap install micro --classic
 sudo snap install spotify
 sudo snap install heroku --classic
