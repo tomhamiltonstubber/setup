@@ -83,15 +83,12 @@ alias genjs="time ./manage.py genjs"
 alias yjs="yarn main-watch"
 alias deployap="./scripts/deploy.py --force-push --dont-migrate --app angrypenguin"
 alias deployapmigs="./scripts/deploy.py --force-push --app angrypenguin"
+alias deploysb="./scripts/deploy.py --force-push --dont-migrate --app tcsandbox"
+alias deploysbmigs="./scripts/deploy.py --force-push --app tcsandbox"
 
-alias rqtest="ASYNC_RQ=False ./manage.py rq_test"
-alias testall="DJDB=False ASYNC_RQ=False pytest --reuse-db -n 8 --tb=native"
-alias testreset="DJDB=False ASYNC_RQ=False pytest -n 8 --tb=native"
-alias testone="DJDB=False ASYNC_RQ=False pytest --reuse-db --tb=native -k"
-
-alias ta="testall"
-alias tr="testreset"
-alias to="testone"
+alias te="pytest -n auto"
+alias tr="pytest --reuse-db -n auto"
+alias t1r="pytest --reuse-db"
 
 # TC2 Heroku backup Shortcuts
 alias hrbus="heroku pg:backups"
@@ -111,6 +108,9 @@ alias gc="git checkout "
 alias gm="python3 ~/repos/checkout_master_check_dumps.py"
 alias gb="python3 ~/repos/branch_checkout.py"
 alias gcpr="~/repos/checkout_pr.sh"
+alias pt="python3 ~/repos/run_test.py"
+
+alias uuu="sudo apt update && sudo apt upgrade"
 
 # TC Variables
 export ASYNC_RQ="TRUE"

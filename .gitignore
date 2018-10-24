@@ -1,3 +1,11 @@
 *
 !*.
-!recipes/
+!branch_checkout.py
+!checkout_master_check_dumps.py
+!checkout_pr.sh
+!commission_figs.py
+!dl_backup.py
+!pycharm_settings.jar
+!run_test.py
+!setup.sh
+
