@@ -38,13 +38,13 @@ def get_command(parsed):
             file_path = re.findall(r'(.*?)\:\d', file_path)[0]
         if '.' in test_case and not test_case.endswith('_'):
             test_case = test_case.replace('.', '::')
-            print('Running tests for Ttest', fmt(test_case))
+            print('Running tests for test', fmt(test_case))
             return f'pytest {file_path}::{test_case}'
         elif 'test_' in test_case:
             print('Running tests for test', fmt(test_case))
             return f'pytest {file_path} -k {test_case}'
         print('Running tests for TestCase', fmt(test_case))
-        return f'pytest {file_path} -k {".".split(test_case)[0]}'
+        return f'pytest {file_path} -k {test_case.split(".")[0]}'
 
 
 if __name__ == '__main__':
