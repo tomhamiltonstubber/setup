@@ -26,7 +26,7 @@ def main():
     path = './AATutorCruncher/'
     subprocess.run(f'curl -o {path}{file_name} `heroku pg:backups:url {selected_id}` ', shell=True)
     print('Restoring DB')
-    subprocess.run(f'{path}scripts/resetdb.sh')
+    subprocess.run(f'cd {path} && make reset-db', shell=True)
     subprocess.run(f'cd {path} && pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -j 12 -d tutorcruncher2 {file_name}', shell=True)
 
 

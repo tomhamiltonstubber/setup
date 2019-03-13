@@ -77,22 +77,16 @@ alias hsh="heroku run python manage.py shell_plus"
 alias AA="cd ~/repos/AATutorCruncher/ && source env/bin/activate"
 alias rdcd="./manage.py reset_database --create-demo-agency --su-password testing"
 alias hrrdcd="heroku run --app angrypenguin ./manage.py reset_database --create-demo-agency"
-alias piprr="pip install -r requirements.txt && pip install -r ./test_extras/requirements.txt"
-alias plt="time ./test_extras/lint.sh"
+alias piprr="make install-dev"
+alias plt="time make lint"
 alias genjs="time ./manage.py genjs"
-alias yjs="yarn main-watch"
-alias deployap="./scripts/deploy.py --force-push --dont-migrate --app angrypenguin"
-alias deployapmigs="./scripts/deploy.py --force-push --app angrypenguin"
-alias deploysb="./scripts/deploy.py --force-push --dont-migrate --app tcsandbox"
-alias deploysbmigs="./scripts/deploy.py --force-push --app tcsandbox"
-
-alias te="pytest -n auto"
-alias tr="pytest --reuse-db -n auto"
-alias t1r="pytest --reuse-db"
+alias yarn-watch="yarn head && yarn main-watch"
+alias deployap="./extra/deploy.py --force-push --dont-migrate --app angrypenguin"
+alias deployapmigs="./extra/deploy.py --force-push --app angrypenguin"
 
 # TC2 Heroku backup Shortcuts
 alias hrbus="heroku pg:backups"
-alias res="./scripts/resetdb.sh && pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d tutorcruncher2 ./a"
+alias res="make reset-db && pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -j12 -d tutorcruncher2 ./a"
 alias awscp="time aws s3 cp ./a s3://tutorcruncher-db-backups/ --region eu-west-1"
 
 # SV Shortcuts
