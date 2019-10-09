@@ -4,7 +4,7 @@
     default = simple
 [alias]
     pushf = push --force-with-lease
-    commend = commit --amend --no-edit
+    commend = commit -a --amend --no-edit
     log2 = log --abbrev-commit --format=format:\"%C(bold blue)%h%C(reset) - %C(white)%s%C(reset)\" --max-count=10
     branch2 = for-each-ref --count=15 --sort=-committerdate refs/heads/ --format='%(HEAD) %(align:40,left)%(color:yellow)%(refname:short)%(color:reset)%(end) (%(color:green)%(committerdate:relative)%(color:reset)) %(contents:subject)'
     branch-name = rev-parse --abbrev-ref HEAD

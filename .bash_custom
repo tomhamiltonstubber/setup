@@ -105,6 +105,9 @@ alias gcpr="~/repos/checkout_pr.sh"
 alias pt="python3 ~/repos/run_test.py"
 
 alias uuu="sudo apt update && sudo apt upgrade"
+alias pip="pip3"
+alias python="python3"
+
 
 # TC Variables
 export ASYNC_RQ="TRUE"

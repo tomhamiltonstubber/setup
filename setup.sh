@@ -7,9 +7,9 @@ sudo add-apt-repository ppa:peek-developers/stable -y
 
 sudo apt-get update
 sudo apt-get install \
-google-chrome-stable xclip git sublime-text python-pip git vim unzip python-dev \
-python3.6-dev libjpeg-dev libmemcached-dev postgresql-client postgresql \
-postgresql-contrib redis-server libfreetype6-dev libffi-dev postgresql-server-dev-10 \
+google-chrome-stable xclip git sublime-text python-pip python3-pip git vim unzip python-dev \
+python3.7-dev libjpeg-dev libmemcached-dev postgresql-client postgresql \
+postgresql-contrib redis-server libfreetype6-dev libffi-dev postgresql-server-dev-11 \
 curl gnome-tweak-tool chrome-gnome-shell compizconfig-settings-manager peek
 
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
@@ -31,7 +31,7 @@ gpg --full-generate-key
 gpg --list-secret-keys --keyid-format LONG
 
 # git clone git@github.com:tomhamiltonstubber/setup.git . && \
-git clone git@github.com:tomhamiltonstubber/salsa-verde.git . && \
+git clone git@github.com:tomhamiltonstubber/salsa-verde.git SalsaVerde && \
 git clone git@github.com:tutorcruncher/TutorCruncher2 AATutorCruncher && \
 git clone git@github.com:tutorcruncher/TutorCruncher2 TC2 && \
 git clone git@github.com:tutorcruncher/socket-server && \
