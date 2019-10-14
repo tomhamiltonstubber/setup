@@ -14,6 +14,7 @@ def get_commission_figures(**kwargs):
         .filter(inv_count__lte=6, inv_count__gt=0)
     )
     for cli in clients:
+        from dateutil.relativedelta import relativedelta
         if cli.invoices.order_by('date_sent').first().date_sent >= tc_now() - relativedelta(months=6, day=1):
             client_ids.append(cli.id)
     period = (tc_now() - relativedelta(months=1)).strftime('%Y%m')
@@ -23,4 +24,3 @@ def get_commission_figures(**kwargs):
         .filter(agency__cligency__in=client_ids, period=int(period))
         .aggregate(v=Sum('base_fee') + Sum('revenue_usage_fee'))['v']
     )
-

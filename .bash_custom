@@ -2,8 +2,8 @@
 export EDITOR=micro
 
 # Bash history size
-HISTSIZE=-1
-HISTFILESIZE=-1
+export HISTSIZE=-1
+export HISTFILESIZE=-1
 
 # Avoid succesive duplicates in the bash command history.
 export HISTCONTROL=ignoreboth:erasedups
@@ -67,7 +67,7 @@ alias tc="cd ~/repos/tutorcruncher.com/ && source env/bin/activate"
 # Django Shortcuts
 alias src="source env/bin/activate"
 alias rs="./manage.py runserver"
-alias hd="./manage.py rqworker high default low long"
+alias hd="./manage.py rqworker high default low"
 alias migrate="time python manage.py migrate"
 alias pipr="pip install -r requirements.txt"
 alias lsh="source env/bin/activate && python manage.py shell_plus"

@@ -57,7 +57,7 @@ def main():
             echo('running isort...')
             subprocess.run([str(isort_path), '-rc', '-w', '120', file], check=True)
         else:
-            raise RuntimeError('Not installed')
+            raise RuntimeError(isort_path)
             print('isort not installed')
     else:
         echo(f'"{no_isort.pattern}" found in file, not running isort')
