@@ -79,10 +79,10 @@ def main(db_id, dont_upload, path, app, db_name, reset_db, backup_bucket):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Run tests.')
+    parser = argparse.ArgumentParser(description='Downloading and restoring a backup.')
     parser.add_argument('-db', default='', type=str, help='The ID of the db you want to download (eg. a1234)')
     parser.add_argument('--dont-upload', action='store_true', default=False, help="Don't upload the file to S3 if it doesn't exist")
     kwargs, _ = parser.parse_known_args()
     path = os.getcwd()
     opts = OPTS[path.split('/')[-1]]
-    main(kwargs.db, kwargs.dont_upload, path,**opts)
+    main(kwargs.db, kwargs.dont_upload, path, **opts)
