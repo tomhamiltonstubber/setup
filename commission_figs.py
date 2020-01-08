@@ -5,6 +5,7 @@ def get_commission_figures(**kwargs):
     from TutorCruncher.tcsales.models import AgencyActivity
     from TutorCruncher.crm.models import Client
     from TutorCruncher.timezones import tc_now
+    from dateutil.relativedelta import relativedelta
 
     client_ids = []
     clients = (
@@ -14,7 +15,6 @@ def get_commission_figures(**kwargs):
         .filter(inv_count__lte=6, inv_count__gt=0)
     )
     for cli in clients:
-        from dateutil.relativedelta import relativedelta
         if cli.invoices.order_by('date_sent').first().date_sent >= tc_now() - relativedelta(months=6, day=1):
             client_ids.append(cli.id)
     period = (tc_now() - relativedelta(months=1)).strftime('%Y%m')

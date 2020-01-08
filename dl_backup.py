@@ -30,14 +30,14 @@ def _get_id(default_id, available_ids):
         return s_id
     else:
         print(f'Bad key: {s_id}')
-        get_id()
+        _get_id(default_id, available_ids)
 
 
 
 def main(db_id, dont_upload, path, app, db_name, reset_db, backup_bucket):
     output = subprocess.run(f'heroku pg:backups -a {app}', shell=True, stdout=subprocess.PIPE)
     output = output.stdout.decode()
-    lines = re.findall(r'(.*?)  (201.*?) .*?\n', output)
+    lines = re.findall(r'(.*?)  (202.*?) .*?\n', output)
     data = {}
     print()
     available_ids = []
@@ -79,10 +79,10 @@ def main(db_id, dont_upload, path, app, db_name, reset_db, backup_bucket):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Downloading and restoring a backup.')
+    parser = argparse.ArgumentParser(description='Run tests.')
     parser.add_argument('-db', default='', type=str, help='The ID of the db you want to download (eg. a1234)')
     parser.add_argument('--dont-upload', action='store_true', default=False, help="Don't upload the file to S3 if it doesn't exist")
     kwargs, _ = parser.parse_known_args()
     path = os.getcwd()
     opts = OPTS[path.split('/')[-1]]
-    main(kwargs.db, kwargs.dont_upload, path, **opts)
+    main(kwargs.db, kwargs.dont_upload, path,**opts)

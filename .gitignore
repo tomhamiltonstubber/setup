@@ -1,5 +1,6 @@
 .pgpass
 .~*
+.idea/
 AATutorCruncher/
 TC2/
 amfutureug.com/
@@ -12,6 +13,8 @@ dinotutors.com/
 django-bootstrap3-datetimepicker/
 django-jinja/
 elevate-academy/
+TutorCruncher*
+tutorcruncher*
 *key*
 global-elite-prep/
 gnome15/
@@ -36,6 +39,6 @@ tc-imports/
 tc-translations/
 tutorcruncher.com/
 uk-postcode-api/
-
+ringo-server.sh
 ringo-server
 file_watchers/env/
