@@ -1,16 +1,33 @@
 #!/usr/bin/env python3.7
 import argparse
 from glob import glob
+import importlib
 import json
 import os
 import pytest
 import re
 
-re_test_match = re.compile('def (test_.*?)\(self\)\:')
+re_def_match = re.compile('def (test_.*?)\(self.*?\)\:', re.DOTALL)
+re_classes_match = re.compile(r'class .*?\n{3}', re.DOTALL)
+re_cls_match = re.compile(r'class (.*?)\(')
 
 
 class TestError(RuntimeError):
     pass
+
+
+def _get_items(content):
+    classes = re_classes_match.findall(content)
+    for cls in classes:
+        match = re_cls_match.search(cls)
+        try:
+            cls_name = match.group(1)
+        except AttributeError:
+            # No test cases here
+            pass
+        else:
+            for func in re_def_match.findall(cls):
+                yield cls_name, func
 
 
 class TestRunner:
@@ -23,24 +40,24 @@ class TestRunner:
                 pass
             else:
                 self.extra_args.append('--reuse-db')
-        project_dir = os.getcwd().split('/')[-1]
-        self.test_info_path = f'{project_dir}_test_info.json'
+        self.project_dir = os.getcwd().split('/')[-1]
+        self.test_info_path = f'../{self.project_dir}_test_info.json'
 
     def _check_update_files(self, files_info):
         """
         Checks all of the files that could have tests for changes in them
         """
-        test_files = glob('./**/test_*.py', recursive=True)
+        test_files = glob(f'TutorCruncher/**/test_*.py', recursive=True)
         files_changed = False
 
         for file in test_files:
-            modified = os.stat(file).st_mtime
+            modified = os.stat(file).st_atime_ns
             file_info = files_info.get(file, {})
             if file_info.get('last_edited') != modified:
                 print(f'Updating file {file}')
                 with open(file) as f:
                     content = f.read()
-                tests = re_test_match.findall(content)
+                tests = list(_get_items(content))
                 files_changed = True
             else:
                 tests = file_info.get('tests', [])
@@ -52,9 +69,9 @@ class TestRunner:
 
     def find_tests(self, tests_data, test_str):
         for fp, data in tests_data.items():
-            test = next((f for f in data['tests'] if f == test_str), None)
-            if test:
-                yield f'{fp}::{test}'
+            for testcase, test in data['tests']:
+                if test == test_str:
+                    yield f'{fp}::{testcase}::{test}'
 
     def run(self, test_str):
         try:
@@ -89,8 +106,7 @@ class TestRunner:
             extra_args += ['-n', str(processes)]
 
         print(f'Running tests {tests} with args {extra_args}')
-        r = pytest.main(list(tests) + extra_args)
-        print(r)
+        pytest.main(list(tests) + extra_args)
 
 
 if __name__ == '__main__':
