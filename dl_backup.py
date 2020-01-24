@@ -8,6 +8,8 @@ import subprocess
 from datetime import datetime
 from devtools import sformat
 
+from operator import itemgetter
+
 OPTS = {
     'AATutorCruncher': {
         'app': 'tutorcruncher',
@@ -37,10 +39,19 @@ def _get_id(default_id, available_ids):
 def main(db_id, dont_upload, path, app, db_name, reset_db, backup_bucket):
     output = subprocess.run(f'heroku pg:backups -a {app}', shell=True, stdout=subprocess.PIPE)
     output = output.stdout.decode()
-    lines = re.findall(r'(.*?)  (202.*?) .*?\n', output)
-    data = {}
+    lines = set(re.findall(r'(.*?)  ((?:202|201).*?) .*?\n', output))
     print()
+
     available_ids = []
+    for file in glob.glob('*.dump'):
+        id, date = file.split('-', 1)
+        available_ids.append(id)
+        iden = (id, date.replace('.dump', ''))
+        if iden in lines:
+            lines.remove(iden)
+        lines.add((id, date.replace('.dump', '') + ' (local)'))
+
+    lines = sorted(list(lines), key=itemgetter(1), reverse=True)
     for id, date in lines:
         available_ids.append(id)
         print(sformat(f'{id:>10}', sformat.yellow), sformat(date, sformat.green))
@@ -52,7 +63,7 @@ def main(db_id, dont_upload, path, app, db_name, reset_db, backup_bucket):
     else:
         selected_id = _get_id(default_id, available_ids)
 
-    file_name = f'{selected_id}-{dict(lines)[selected_id]}.dump'
+    file_name = f'{selected_id}-{dict(lines)[selected_id].replace(" (local)", "")}.dump'
     full_path = f'{path}/{file_name}'
     if os.path.exists(full_path):
         print('Not downloading new db as already exists')
