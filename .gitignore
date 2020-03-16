@@ -6,6 +6,7 @@ TC2/
 amfutureug.com/
 bq.*
 *_test_info.json
+*_linter_info.json
 byt.co.uk/
 cards/
 dev_test/
@@ -25,6 +26,7 @@ icalendar/
 images-to-triangles/
 intercom-worker/
 intern-test/
+interview_test/
 jobs/
 mirco/
 morpheus/
