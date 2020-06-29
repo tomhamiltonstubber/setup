@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.7
+#!/usr/bin/env python3.8
 import argparse
 import boto3
 import glob
@@ -20,6 +20,12 @@ OPTS = {
     'salsa-verde': {
         'app': 'salsaverde',
         'db_name': 'salsaverde',
+        'reset_db': './scripts/resetdb.sh',
+        'backup_bucket': '',
+    },
+    'brookehouse-blog-dj': {
+        'app': 'brooke-house-blog',
+        'db_name': 'brookehouseblog',
         'reset_db': './scripts/resetdb.sh',
         'backup_bucket': '',
     },
@@ -75,7 +81,7 @@ def main(db_id, dont_upload, path, app, db_name, reset_db, backup_bucket):
     subprocess.run(reset_db, shell=True)
     print('Restoring DB')
     start = datetime.now()
-    subprocess.run(f'pg_restore --clean --no-acl --no-owner -h localhost -U postgres -j 8 -d {db_name} {file_name}', shell=True)
+    subprocess.run(f'pg_restore --clean --no-acl --no-owner -h localhost -U postgres -d {db_name} {file_name}', shell=True)
     print(f'Restored DB in {(datetime.now() - start).total_seconds()} seconds')
     if not dont_upload and backup_bucket:
         s3 = boto3.resource('s3')

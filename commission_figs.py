@@ -12,7 +12,7 @@ def get_commission_figures(**kwargs):
         Client.objects
         .filter(user__branch__agency__is_meta=True)
         .annotate(inv_count=Count('invoices', filter=Q(invoices__status=Invoice.STATUS_PAID), distinct=True))
-        .filter(inv_count__lte=6, inv_count__gt=0)
+        .filter(inv_count__gt=0)
     )
     for cli in clients:
         if cli.invoices.order_by('date_sent').first().date_sent >= tc_now() - relativedelta(months=6, day=1):

@@ -17,9 +17,9 @@ class TestError(RuntimeError):
     pass
 
 
-def _get_items(content):
+def _get_items(content, ff):
     classes = re_classes_match.findall(content)
-    if classes:
+    if not ff and classes and not all('Mock' in c[:50] for c in classes):
         for cls in classes:
             match = re_cls_match.search(cls)
             try:
@@ -36,7 +36,7 @@ def _get_items(content):
 
 
 class TestRunner:
-    def __init__(self, reuse_db, force_rebuild, *args):
+    def __init__(self, reuse_db, force_rebuild, force_function_based, *args):
         self.extra_args = list(args)
         if reuse_db:
             try:
@@ -48,6 +48,7 @@ class TestRunner:
         self.project_dir = os.getcwd().split('/')[-1]
         self.test_info_path = f'../{self.project_dir}_test_info.json'
         self.force_rebuild = force_rebuild
+        self.force_function_based = force_function_based
 
     def _check_update_files(self, files_info):
         """
@@ -65,7 +66,7 @@ class TestRunner:
                 print(f'Updating file {file}')
                 with open(file) as f:
                     content = f.read()
-                tests = list(_get_items(content))
+                tests = list(_get_items(content, self.force_function_based))
                 files_changed = True
             else:
                 tests = file_info.get('tests', [])
@@ -127,7 +128,7 @@ class TestRunner:
 
     def run_test(self, *tests, processes=0):
         # Checking to see what's installed
-        extra_args = [*self.extra_args]
+        extra_args = ['--tb', 'native', *self.extra_args]
         if '--lf' in extra_args:
             processes = 0
         elif processes:
@@ -147,6 +148,7 @@ if __name__ == '__main__':
     parser.add_argument('test_case')
     parser.add_argument('-x', dest='new_db', action='store_true', default=False, help='Should use new db')
     parser.add_argument('-r', dest='force_rebuild', action='store_true', default=False, help='Force rebuild of tests file')
+    parser.add_argument('-ff', dest='force_function_based', action='store_true', default=False, help='Force using function based tests instead of class')
     parsed, extra_args = parser.parse_known_args()
-    runner = TestRunner(not parsed.new_db, parsed.force_rebuild, *extra_args)
+    runner = TestRunner(not parsed.new_db, parsed.force_rebuild, parsed.force_function_based, *extra_args)
     runner.run(parsed.test_case)

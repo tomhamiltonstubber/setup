@@ -86,8 +86,7 @@ alias deployapmigs="./extra/deploy.py --force-push --app angrypenguin"
 
 # TC2 Heroku backup Shortcuts
 alias hrbus="heroku pg:backups"
-alias res="make reset-db && pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -j12 -d tutorcruncher2 ./a"
-alias awscp="time aws s3 cp ./a s3://tutorcruncher-db-backups/ --region eu-west-1"
+alias res="make reset-db && time pg_restore --clean --no-acl --no-owner -h localhost -U postgres -d tutorcruncher2 ./a"
 
 # SV Shortcuts
 alias SV="cd ~/repos/salsa-verde/ && source env/bin/activate"
@@ -115,5 +114,5 @@ export ASYNC_RQ="TRUE"
 export DJ_DEBUG="TRUE"
 export DJDB="TRUE"
 
-export PATH="~/bin:$PATH"
+export PATH="~/.local/bin:$PATH"
 export PY_DEVTOOLS_HIGHLIGHT=1

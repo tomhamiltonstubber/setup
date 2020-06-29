@@ -3,9 +3,18 @@ from datetime import datetime
 from glob import glob
 import json
 import os
+import subprocess
 
 from flake8.api import legacy as flake8
+import black
 import configparser
+
+
+project_checks = {
+    'AATutorCruncher': ['TutorCruncher'],
+    'ventilator': ['src', 'tests'],
+    'find-a-tutor': ['tcfat', 'tests'],
+}
 
 
 class Linter:
@@ -19,7 +28,7 @@ class Linter:
         self.f8_config = dict(dict(config).get('flake8', {}))
         if self.f8_config:
             self.f8_config['ignore'] = ['E402'] + self.f8_config['ignore'].split(', ')
-            self.f8_config['exclude'] = [i for i in self.f8_config['exclude'].replace('\n', ',').split(',') if i]
+            self.f8_config['exclude'] = [i for i in self.f8_config.get('exclude', '').replace('\n', ',').split(',') if i]
         self.now = datetime.now().timestamp()
 
     def _check_update_files(self, files_info):
@@ -51,6 +60,9 @@ class Linter:
                 files_info = {}
         style_guide = flake8.get_style_guide(**self.f8_config)
         files_to_check = self._check_update_files(files_info)
+        p_dirs = ' '.join(project_checks[self.project_dir])
+        subprocess.run([f'black -S -l 120 --target-version py38 {p_dirs}'], shell=True)
+        subprocess.run([f'isort -rc {p_dirs}'], shell=True)
         if files_to_check:
             report = style_guide.check_files(files_to_check)
             wrong_files = [e.filename for e in report._stats._store.keys()]
