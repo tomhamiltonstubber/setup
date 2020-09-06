@@ -14,6 +14,7 @@ project_checks = {
     'AATutorCruncher': ['TutorCruncher'],
     'ventilator': ['src', 'tests'],
     'find-a-tutor': ['tcfat', 'tests'],
+    'SalsaVerde': ['SalsaVerde'],
 }
 
 
@@ -62,7 +63,7 @@ class Linter:
         files_to_check = self._check_update_files(files_info)
         p_dirs = ' '.join(project_checks[self.project_dir])
         subprocess.run([f'black -S -l 120 --target-version py38 {p_dirs}'], shell=True)
-        subprocess.run([f'isort -rc {p_dirs}'], shell=True)
+        subprocess.run([f'isort {p_dirs}'], shell=True)
         if files_to_check:
             report = style_guide.check_files(files_to_check)
             wrong_files = [e.filename for e in report._stats._store.keys()]

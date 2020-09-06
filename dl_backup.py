@@ -17,7 +17,7 @@ OPTS = {
         'reset_db': 'make reset-db',
         'backup_bucket': 'tutorcruncher-db-backups',
     },
-    'salsa-verde': {
+    'SalsaVerde': {
         'app': 'salsaverde',
         'db_name': 'salsaverde',
         'reset_db': './scripts/resetdb.sh',
