@@ -17,13 +17,13 @@ OPTS = {
         'reset_db': 'make reset-db',
         'backup_bucket': 'tutorcruncher-db-backups',
     },
-    'salsa-verde': {
+    'SalsaVerde': {
         'app': 'salsaverde',
         'db_name': 'salsaverde',
         'reset_db': './scripts/resetdb.sh',
         'backup_bucket': '',
     },
-    'brookehouse-blog-dj': {
+    'blog.brookehouse.com': {
         'app': 'brooke-house-blog',
         'db_name': 'brookehouseblog',
         'reset_db': './scripts/resetdb.sh',
@@ -39,7 +39,6 @@ def _get_id(default_id, available_ids):
     else:
         print(f'Bad key: {s_id}')
         _get_id(default_id, available_ids)
-
 
 
 def main(db_id, dont_upload, path, app, db_name, reset_db, backup_bucket):

@@ -39,12 +39,7 @@ class TestRunner:
     def __init__(self, reuse_db, force_rebuild, force_function_based, *args):
         self.extra_args = list(args)
         if reuse_db:
-            try:
-                import pytest_django
-            except ImportError:
-                pass
-            else:
-                self.extra_args.append('--reuse-db')
+            self.extra_args.append('--reuse-db')
         self.project_dir = os.getcwd().split('/')[-1]
         self.test_info_path = f'../{self.project_dir}_test_info.json'
         self.force_rebuild = force_rebuild
@@ -132,13 +127,8 @@ class TestRunner:
         if '--lf' in extra_args:
             processes = 0
         elif processes:
-            try:
-                import xdist
-            except ImportError:
-                pass
-            else:
-                extra_args += ['-n', str(processes)]
-
+            extra_args += ['-n', str(processes)]
+        tests = set(list(tests))
         print(f'Running tests {tests} with args {extra_args}')
         pytest.main(list(tests) + extra_args)
 

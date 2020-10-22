@@ -86,7 +86,7 @@ alias deployapmigs="./extra/deploy.py --force-push --app angrypenguin"
 
 # TC2 Heroku backup Shortcuts
 alias hrbus="heroku pg:backups"
-alias res="make reset-db && time pg_restore --clean --no-acl --no-owner -h localhost -U postgres -d tutorcruncher2 ./a"
+alias res="make reset-db && time pg_restore --clean --no-acl --no-owner -j12 -h localhost -U postgres -d tutorcruncher2 ./a"
 
 # SV Shortcuts
 alias SV="cd ~/repos/salsa-verde/ && source env/bin/activate"
