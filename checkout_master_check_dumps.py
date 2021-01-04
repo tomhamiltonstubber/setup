@@ -13,4 +13,8 @@ else:
             for fn in dump_files:
                 os.system('shred -uz ' + fn)
                 print('Shredded ' + fn)
-os.system('git checkout master')
+try:
+    os.system('git checkout master')
+except:
+    os.system('git checkout main')
+

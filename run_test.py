@@ -38,8 +38,13 @@ def _get_items(content, ff):
 class TestRunner:
     def __init__(self, reuse_db, force_rebuild, force_function_based, *args):
         self.extra_args = list(args)
-        if reuse_db:
-            self.extra_args.append('--reuse-db')
+        try:
+            import django
+        except ImportError:
+            pass
+        else:
+            if reuse_db:
+                self.extra_args.append('--reuse-db')
         self.project_dir = os.getcwd().split('/')[-1]
         self.test_info_path = f'../{self.project_dir}_test_info.json'
         self.force_rebuild = force_rebuild

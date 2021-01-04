@@ -80,7 +80,7 @@ def main(db_id, dont_upload, path, app, db_name, reset_db, backup_bucket):
     subprocess.run(reset_db, shell=True)
     print('Restoring DB')
     start = datetime.now()
-    subprocess.run(f'pg_restore --clean --no-acl --no-owner -h localhost -U postgres -d {db_name} {file_name}', shell=True)
+    subprocess.run(f'pg_restore --clean --no-acl --no-owner -h localhost -U postgres -d {db_name} {file_name} -j12', shell=True)
     print(f'Restored DB in {(datetime.now() - start).total_seconds()} seconds')
     if not dont_upload and backup_bucket:
         s3 = boto3.resource('s3')
@@ -101,4 +101,4 @@ if __name__ == '__main__':
     kwargs, _ = parser.parse_known_args()
     path = os.getcwd()
     opts = OPTS[path.split('/')[-1]]
-    main(kwargs.db, kwargs.dont_upload, path,**opts)
+    main(kwargs.db, True, path,**opts)

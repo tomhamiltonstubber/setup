@@ -16,6 +16,7 @@ project_checks = {
     'find-a-tutor': ['tcfat/', 'tests/'],
     'SalsaVerde': ['SalsaVerde/'],
     'TCIntercom': ['tcintercom/', 'tests/'],
+    'dundjeon-finder': ['DungeonFinder/'],
 }
 
 
