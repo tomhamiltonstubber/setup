@@ -14,6 +14,7 @@ project_checks = {
     'AATutorCruncher': ['TutorCruncher/'],
     'ventilator': ['src/', 'tests/'],
     'find-a-tutor': ['tcfat/', 'tests/'],
+    'tc-virus-checker': ['tc_av/', 'tests/'],
     'SalsaVerde': ['SalsaVerde/'],
     'TCIntercom': ['tcintercom/', 'tests/'],
     'dundjeon-finder': ['DungeonFinder/'],

@@ -9,15 +9,17 @@ sudo add-apt-repository ppa:deadsnakes/ppa -y
 sudo add-apt-repository ppa:peek-developers/stable -y
 
 sudo apt-get update
-sudo apt-get install \
-python3.8 python3.8-dev python-pip python3-pip python-dev \
+sudo apt-get install -y \
+python3.8 python3.8-dev python3-pip python-dev \
 google-chrome-stable xclip git gh sublime-text vim unzip \
 libjpeg-dev libmemcached-dev postgresql-client postgresql postgresql-server-dev-12 \
 postgresql-contrib redis-server libfreetype6-dev libffi-dev \
-curl gnome-tweak-tool chrome-gnome-shell peek
+curl gnome-tweak-tool chrome-gnome-shell peek python3-virtualenv
 
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-sudo apt-get install yarn
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
+sudo apt-get install yarn npm -y
 
 sudo pip install virtualenv awscli
 sudo pip3 install devtools
