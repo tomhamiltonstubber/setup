@@ -18,6 +18,7 @@ project_checks = {
     'SalsaVerde': ['SalsaVerde/'],
     'TCIntercom': ['tcintercom/', 'tests/'],
     'dundjeon-finder': ['DungeonFinder/'],
+    'sunshine-packages': ['SunshinePackages/'],
 }
 
 
@@ -64,9 +65,18 @@ class Linter:
                 files_info = {}
         style_guide = flake8.get_style_guide(**self.f8_config)
         files_to_check = self._check_update_files(files_info)
+        print('Checking for debug...')
+        debug_files = []
+        for file in files_to_check:
+            with open(file) as f:
+                if '    debug(' in f.read():
+                    debug_files.append(file)
+        if debug_files:
+            print('😴 Debug found in the following files:\n  ' + '\n     '.join(debug_files))
+            return
         p_dirs = ' '.join(project_checks[self.project_dir])
-        subprocess.run([f'black -S -l 120 --target-version py38 {p_dirs}'], shell=True)
-        subprocess.run([f'isort {p_dirs}'], shell=True)
+        subprocess.run([f'black -S -l 120 --target-version py38 {" ".join(files_to_check)}'], shell=True)
+        subprocess.run([f'isort {" ".join(files_to_check)}'], shell=True)
         if files_to_check:
             report = style_guide.check_files(files_to_check)
             wrong_files = [e.filename for e in report._stats._store.keys()]
