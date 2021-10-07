@@ -4,6 +4,7 @@ from glob import glob
 import importlib
 import json
 import os
+import subprocess
 import pytest
 import re
 
@@ -17,38 +18,37 @@ class TestError(RuntimeError):
     pass
 
 
-def _get_items(content, ff):
-    classes = re_classes_match.findall(content)
-    if not ff and classes and not all('Mock' in c[:50] for c in classes):
-        for cls in classes:
-            match = re_cls_match.search(cls)
-            try:
-                cls_name = match.group(1)
-            except AttributeError:
-                # No test cases here
-                pass
-            else:
-                for func in re_def_match.findall(cls):
-                    yield cls_name, func
+def _get_items(content, using_django):
+    if using_django:
+        classes = re_classes_match.findall(content)
+        if classes and not all('Mock' in c[:50] for c in classes):
+            for cls in classes:
+                match = re_cls_match.search(cls)
+                try:
+                    cls_name = match.group(1)
+                except AttributeError:
+                    # No test cases here
+                    pass
+                else:
+                    for func in re_def_match.findall(cls):
+                        yield cls_name, func
     else:
         for func in re_func_match.findall(content):
             yield None, func
 
 
 class TestRunner:
-    def __init__(self, reuse_db, force_rebuild, force_function_based, *args):
+    using_django = False
+
+    def __init__(self, reuse_db, force_rebuild, *args):
         self.extra_args = list(args)
-        try:
-            import django
-        except ImportError:
-            pass
-        else:
+        if 'manage.py' in os.listdir():
+            self.using_django = True
             if reuse_db:
                 self.extra_args.append('--reuse-db')
         self.project_dir = os.getcwd().split('/')[-1]
-        self.test_info_path = f'../{self.project_dir}_test_info.json'
+        self.test_info_path = f'../.data/{self.project_dir}_test_info.json'
         self.force_rebuild = force_rebuild
-        self.force_function_based = force_function_based
 
     def _check_update_files(self, files_info):
         """
@@ -66,7 +66,7 @@ class TestRunner:
                 print(f'Updating file {file}')
                 with open(file) as f:
                     content = f.read()
-                tests = list(_get_items(content, self.force_function_based))
+                tests = list(_get_items(content, self.using_django))
                 files_changed = True
             else:
                 tests = file_info.get('tests', [])
@@ -128,11 +128,14 @@ class TestRunner:
 
     def run_test(self, *tests, processes=0):
         # Checking to see what's installed
-        extra_args = ['--tb', 'native', *self.extra_args]
+        extra_args = ['--tb', 'native']
+
+        installed_packages = subprocess.run([f'pip freeze'], shell=True, stdout=subprocess.PIPE).stdout.decode()
         if '--lf' in extra_args:
             processes = 0
-        elif processes:
+        elif processes and 'pytest-xdist' in installed_packages:
             extra_args += ['-n', str(processes)]
+        extra_args += self.extra_args
         tests = set(list(tests))
         print(f'Running tests {tests} with args {extra_args}')
         pytest.main(list(tests) + extra_args)
@@ -143,7 +146,6 @@ if __name__ == '__main__':
     parser.add_argument('test_case')
     parser.add_argument('-x', dest='new_db', action='store_true', default=False, help='Should use new db')
     parser.add_argument('-r', dest='force_rebuild', action='store_true', default=False, help='Force rebuild of tests file')
-    parser.add_argument('-ff', dest='force_function_based', action='store_true', default=False, help='Force using function based tests instead of class')
     parsed, extra_args = parser.parse_known_args()
-    runner = TestRunner(not parsed.new_db, parsed.force_rebuild, parsed.force_function_based, *extra_args)
+    runner = TestRunner(not parsed.new_db, parsed.force_rebuild, *extra_args)
     runner.run(parsed.test_case)

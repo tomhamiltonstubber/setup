@@ -19,6 +19,9 @@ project_checks = {
     'TCIntercom': ['tcintercom/', 'tests/'],
     'dundjeon-finder': ['DungeonFinder/'],
     'sunshine-packages': ['SunshinePackages/'],
+    'TCHubspot': ['tc_hs/', 'tests/'],
+    'morpheus': ['src/', 'tests/'],
+    'main-platform': ['src/', 'tests/'],
 }
 
 
@@ -26,7 +29,7 @@ class Linter:
     def __init__(self, force_rebuild, *args):
         self.extra_args = list(args)
         self.project_dir = os.getcwd().split('/')[-1]
-        self.linter_info_path = f'../{self.project_dir}_linter_info.json'
+        self.linter_info_path = f'../.data/{self.project_dir}_linter_info.json'
         self.force_rebuild = force_rebuild
         config = configparser.ConfigParser()
         config.read('setup.cfg')

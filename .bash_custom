@@ -51,7 +51,7 @@ xterm*|rxvt*)
     ;;
 esac
 
-eval "$(starship init bash)"
+# eval "$(starship init bash)"
 
 ###############
 ### Aliases ###
@@ -118,3 +118,4 @@ export DJDB="TRUE"
 
 export PATH="~/.local/bin:$PATH"
 export PY_DEVTOOLS_HIGHLIGHT=1
+export GH_KEY="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"

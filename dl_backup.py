@@ -29,6 +29,12 @@ OPTS = {
         'reset_db': './scripts/resetdb.sh',
         'backup_bucket': '',
     },
+    'sunshine-packages': {
+        'app': 'sunshine-packages',
+        'db_name': 'sunshine',
+        'reset_db': './scripts/resetdb.sh',
+        'backup_bucket': '',
+    },
 }
 
 
