@@ -76,7 +76,7 @@ alias lsh="source env/bin/activate && python manage.py shell_plus"
 alias hsh="heroku run python manage.py shell_plus"
 
 # TC2 Shorcuts
-alias AA="cd ~/repos/AATutorCruncher/ && source env/bin/activate"
+alias AA="cd ~/repos/TutorCruncher2/ && source env/bin/activate"
 alias rdcd="./manage.py reset_database --create-demo-agency --su-password testing"
 alias hrrdcd="heroku run --app angrypenguin ./manage.py reset_database --create-demo-agency"
 alias piprr="make install-dev"
@@ -87,8 +87,12 @@ alias deployap="./extra/deploy.py --force-push --dont-migrate --app angrypenguin
 alias deployapmigs="./extra/deploy.py --force-push --app angrypenguin"
 
 # TC2 Heroku backup Shortcuts
-alias hrbus="heroku pg:backups"
 alias res="make reset-db && time pg_restore --clean --no-acl --no-owner -j12 -h localhost -U postgres -d tutorcruncher2 ./a"
+
+# Appollo shortcuts
+alias APP="cd ~/repos/Appollo-backend/ && source env/bin/activate"
+alias fg="foxglove"
+alias fgw="foxglove web"
 
 # SV Shortcuts
 alias SV="cd ~/repos/salsa-verde/ && source env/bin/activate"

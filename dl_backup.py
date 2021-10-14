@@ -11,7 +11,7 @@ from devtools import sformat
 from operator import itemgetter
 
 OPTS = {
-    'AATutorCruncher': {
+    'TutorCruncher2': {
         'app': 'tutorcruncher',
         'db_name': 'tutorcruncher2',
         'reset_db': 'make reset-db',
@@ -49,12 +49,15 @@ def _get_id(default_id, available_ids):
 
 def main(db_id, dont_upload, path, app, db_name, reset_db, backup_bucket):
     output = subprocess.run(f'heroku pg:backups -a {app}', shell=True, stdout=subprocess.PIPE)
+    debug(app)
     output = output.stdout.decode()
     lines = set(re.findall(r'(.*?)  ((?:202|201).*?) .*?\n', output))
     print()
 
     available_ids = []
     for file in glob.glob('*.dump'):
+        if file == 'latest.dump':
+            continue
         id, date = file.split('-', 1)
         available_ids.append(id)
         iden = (id, date.replace('.dump', ''))

@@ -11,7 +11,7 @@ import configparser
 
 
 project_checks = {
-    'AATutorCruncher': ['TutorCruncher/'],
+    'TutorCruncher2': ['TutorCruncher/'],
     'ventilator': ['src/', 'tests/'],
     'find-a-tutor': ['tcfat/', 'tests/'],
     'tc-virus-checker': ['tc_av/', 'tests/'],
