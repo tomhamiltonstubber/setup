@@ -110,6 +110,7 @@ alias gcpr="~/repos/checkout_pr.sh"
 alias pt="python3 ~/repos/run_test.py"
 alias lint="python3 ~/repos/run_linter.py"
 alias litn="python3 ~/repos/run_linter.py"
+alias clean-local-branches="~/repos/clean_branches.sh"
 
 alias uuu="sudo apt update && sudo apt upgrade"
 alias pip="pip3"

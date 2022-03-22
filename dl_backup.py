@@ -49,7 +49,6 @@ def _get_id(default_id, available_ids):
 
 def main(db_id, dont_upload, path, app, db_name, reset_db, backup_bucket):
     output = subprocess.run(f'heroku pg:backups -a {app}', shell=True, stdout=subprocess.PIPE)
-    debug(app)
     output = output.stdout.decode()
     lines = set(re.findall(r'(.*?)  ((?:202|201).*?) .*?\n', output))
     print()
