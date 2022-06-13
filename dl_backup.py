@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import argparse
-import boto3
 import glob
 import os
 import re
@@ -90,22 +89,11 @@ def main(db_id, dont_upload, path, app, db_name, reset_db, backup_bucket):
     start = datetime.now()
     subprocess.run(f'pg_restore --clean --no-acl --no-owner -h localhost -U postgres -d {db_name} {file_name} -j12', shell=True)
     print(f'Restored DB in {(datetime.now() - start).total_seconds()} seconds')
-    if not dont_upload and backup_bucket:
-        s3 = boto3.resource('s3')
-        for obj in s3.Bucket('tutorcruncher-db-backups').objects.all():
-            if obj.key == file_name:
-                print('File already in s3, not uploading')
-                return
-        print('Uploading file')
-        s3_client = boto3.client('s3')
-        s3_client.upload_file(Filename=full_path, Bucket=backup_bucket, Key=file_name)
-        print('File uploaded')
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run tests.')
     parser.add_argument('-db', default='', type=str, help='The ID of the db you want to download (eg. a1234)')
-    parser.add_argument('--dont-upload', action='store_true', default=False, help="Don't upload the file to S3 if it doesn't exist")
     kwargs, _ = parser.parse_known_args()
     path = os.getcwd()
     opts = OPTS[path.split('/')[-1]]

@@ -7,7 +7,7 @@ export HISTFILESIZE=-1
 
 # Avoid succesive duplicates in the bash command history.
 export HISTCONTROL=ignoreboth:erasedups
-export HISTIGNORE='git stash pop'
+export HISTIGNORE='git stash pop:git reset HEAD~1'
 
 # Append commands to the bash command history file (~/.bash_history)
 # instead of overwriting it.
