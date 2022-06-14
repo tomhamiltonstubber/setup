@@ -68,11 +68,11 @@ alias tc="cd ~/repos/tutorcruncher.com/ && source env/bin/activate"
 
 # Django Shortcuts
 alias src="source env/bin/activate"
-alias rs="./manage.py runserver"
-alias hd="./manage.py rqworker high default low"
-alias migrate="time python manage.py migrate"
+alias rs="python manage.py runserver"
+alias rw="python manage.py rqworker high default low"
+alias migrate="python manage.py migrate"
 alias pipr="pip install -r requirements.txt"
-alias lsh="source env/bin/activate && python manage.py shell_plus"
+alias lsh="python manage.py shell_plus"
 alias hsh="heroku run python manage.py shell_plus"
 
 # TC2 Shorcuts
@@ -80,9 +80,7 @@ alias AA="cd ~/repos/TutorCruncher2/ && source env/bin/activate"
 alias rdcd="./manage.py reset_database --create-demo-agency --su-password testing"
 alias hrrdcd="heroku run --app angrypenguin ./manage.py reset_database --create-demo-agency"
 alias piprr="make install-dev"
-alias plt="time make lint"
-alias genjs="time ./manage.py genjs"
-alias yarn-watch="yarn head && yarn main-watch"
+alias yw="yarn head && yarn main-watch"
 alias deployap="./extra/deploy.py --force-push --dont-migrate --app angrypenguin"
 alias deployapmigs="./extra/deploy.py --force-push --app angrypenguin"
 
