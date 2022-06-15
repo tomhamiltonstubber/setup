@@ -57,6 +57,9 @@ esac
 ### Aliases ###
 ###############
 
+# Tools
+alias clear_logs="sudo rm -v /var/log/*.log* /var/log/syslog*"
+
 # Python shortcuts
 alias dpyc="find ../ -name '*.pyc' -delete"
 
