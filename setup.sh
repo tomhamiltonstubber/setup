@@ -7,13 +7,13 @@ sudo apt-add-repository https://cli.github.com/packages -y
 sudo add-apt-repository ppa:deadsnakes/ppa -y
 sudo add-apt-repository ppa:peek-developers/stable -y
 
-sudo apt-get update
+sudo apt-get update &&
 sudo apt-get install -y \
-python3.8 python3.8-dev python3-pip python-dev \
+python3.9 python3.9-dev python3-pip \
 google-chrome-stable xclip git gh sublime-text vim unzip \
-libjpeg-dev libmemcached-dev postgresql-client postgresql postgresql-server-dev-12 \
+libjpeg-dev libmemcached-dev postgresql-client postgresql postgresql-server-dev-14 \
 postgresql-contrib redis-server libfreetype6-dev libffi-dev \
-curl gnome-tweak-tool chrome-gnome-shell peek python3-virtualenv
+curl gnome-tweaks chrome-gnome-shell peek python3-virtualenv
 
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -28,17 +28,16 @@ sudo snap install heroku --classic
 sudo snap install pycharm-professional --classic
 sudo snap install slack --classic
 
-mkdir repos
-cd repos/
 ssh-keygen -t rsa -b 4096 -C "tomhamiltonstubber@gmail.com"
 ssh-add ~/.ssh/id_rsa
 xclip -sel clip < ~/.ssh/id_rsa.pub
 gpg --full-generate-key
 gpg --list-secret-keys --keyid-format LONG
 
-git clone git@github.com:tomhamiltonstubber/setup.git . && \
-git clone git@github.com:tomhamiltonstubber/salsa-verde.git SalsaVerde && \
-git clone git@github.com:tutorcruncher/TutorCruncher2 AATutorCruncher && \
-git clone git@github.com:tutorcruncher/TutorCruncher2 TC2 && \
-git clone git@github.com:tutorcruncher/socket-server && \
-git clone git@github.com:tutorcruncher/socket-frontend
+cd ~/
+mkdir repos
+cd repos/
+git clone git@github.com:tutorcruncher/TutorCruncher2 && \
+git clone git@github.com:tutorcruncher/socket-frontend && \
+git clone git@github.com:tutorcruncher/tutorcruncher.com && \
+git clone git@github.com:tomhamiltonstubber/setup .
