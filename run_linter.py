@@ -1,3 +1,21 @@
+"""
+My tool for running the linter for Python projects. To use best, I recommend that you add this file to 
+the base dir that you store your code in. Then create an alias in your bash for `pylint=python ~/code/run_linter.py`.
+
+The script will only run for files that have changed. PROJECT_DIRS should be a dict of base dir name to 
+a list of the directories to run the linter on.
+
+You also need to create a `.data` directory in your code root folder, which is where the script stores data
+about when files have changed.
+
+Very occasionally the building of the `linter_info.json` file fails, and no changes to files will be detected. If
+this happens, just rebuild with the -r command.
+
+Config is taken from a `setup.cfg` file for flake8 and isort, but black uses pyproject.toml (sigh) so I add the default
+args I use for all Python projects of `-S -l 120`.
+"""
+
+
 import argparse
 from datetime import datetime
 from glob import glob
@@ -10,7 +28,7 @@ import black
 import configparser
 
 
-project_checks = {
+PROJECT_DIRS = {
     'TutorCruncher2': ['TutorCruncher/'],
     'ventilator': ['src/', 'tests/'],
     'find-a-tutor': ['tcfat/', 'tests/'],
@@ -77,7 +95,7 @@ class Linter:
         if debug_files:
             print('😴 Debug found in the following files:\n  ' + '\n     '.join(debug_files))
             return
-        p_dirs = ' '.join(project_checks[self.project_dir])
+        p_dirs = ' '.join(PROJECT_DIRS[self.project_dir])
         subprocess.run([f'black -S -l 120 --target-version py38 {" ".join(files_to_check)}'], shell=True)
         subprocess.run([f'isort {" ".join(files_to_check)}'], shell=True)
         if files_to_check:
