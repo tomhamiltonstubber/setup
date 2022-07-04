@@ -15,7 +15,6 @@ Config is taken from a `setup.cfg` file for flake8 and isort, but black uses pyp
 args I use for all Python projects of `-S -l 120`.
 """
 
-
 import argparse
 from datetime import datetime
 from glob import glob
