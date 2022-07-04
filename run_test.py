@@ -1,4 +1,37 @@
-#!/usr/bin/env python3.7
+"""
+My tool for running unittests using pytest for my Python projects. Running tests with the pytest -k argument was too
+slow.
+
+The tool uses a not very clever regex to find all tests, and runs them using the -k argument. Running an individual
+test or test class is much fast here.
+
+How to use:
+
+To use, I recommend adding an alias for `pt=python ~/code/run_test.py` (add this file to your base code directory).
+Then you can run it with:
+
+1) an individual test: `pt test_foo`
+2) a test case: `pt TestCase`
+3) a test file: `pt  /home/tom/code/Project/tests/test_foo.py
+4) a directory: `pt Project/main/`
+
+The script uses the -k arg, so `pt test_foo` will run `pytest /home/tom/code/Project/tests/test_foo.py -k test_foo`. It
+does this by building a `test_info.json` file in the `.data/` dir in your base code directory (make sure the .data/ dir
+exists).
+
+Other arguments:
+
+Occasionally the building of `test_info.json` fails, use the -r argument to rebuild it from all files.
+
+When using pytest-django, there's an option `--reuse-db` that means the database won't be recreated each time you run
+tests. Since this can take a while, I assume this option is always true unless you use the `-x` argument. So, if a test
+fails because of a database error of some sort, use the `-x` argument.
+
+I don't like the traceback that pytest shows you, so I elect to include the tb=native option when running tests.
+If you want to change it comment that line out I guess.
+
+"""
+
 import argparse
 from glob import glob
 import importlib
