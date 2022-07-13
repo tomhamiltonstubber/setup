@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 """
 My tool for running unittests using pytest for my Python projects. Running tests with the pytest -k argument was too
 slow.
@@ -32,9 +31,6 @@ I don't like the traceback that pytest shows you, so I elect to include the tb=n
 If you want to change it comment that line out I guess.
 
 """
-
-=======
->>>>>>> Stashed changes
 import argparse
 from glob import glob
 from importlib.machinery import SourceFileLoader
