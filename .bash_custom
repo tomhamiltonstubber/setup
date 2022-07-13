@@ -124,4 +124,7 @@ export DJDB="TRUE"
 
 export PATH="~/.local/bin:$PATH"
 export PY_DEVTOOLS_HIGHLIGHT=1
-export GH_KEY="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"
+
+if [ -f ~/repos/.bash_secrets ]; then
+    . ~/repos/.bash_secrets
+fi

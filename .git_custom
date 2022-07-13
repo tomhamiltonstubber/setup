@@ -11,3 +11,5 @@
     force-publish = "! git push --set-upstream origin $(git branch-name)"
     pushp = "! if [ \"$(git branch-name)\" != \"master\" ]; then git force-publish; else echo 'on master, not publishing' && exit 1; fi && gh pr create"
     branchmin = for-each-ref --count=30 --sort=-committerdate refs/heads/ --format='%(refname:short),%(contents:subject)'
+    ppr = "!f() { ~/repos/pull_pull_request.py $@; }; f"
+    puhs = push

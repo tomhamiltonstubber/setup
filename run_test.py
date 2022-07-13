@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 """
 My tool for running unittests using pytest for my Python projects. Running tests with the pytest -k argument was too
 slow.
@@ -32,9 +33,11 @@ If you want to change it comment that line out I guess.
 
 """
 
+=======
+>>>>>>> Stashed changes
 import argparse
 from glob import glob
-import importlib
+from importlib.machinery import SourceFileLoader
 import json
 import os
 import subprocess
@@ -70,6 +73,17 @@ def _get_items(content, using_django):
             yield None, func
 
 
+def _get_items_2(path):
+    m = SourceFileLoader('m', path).load_module()
+    for name, class_or_func in inspect.getmembers(foo):
+        if inspect.isclass(class_or_func):
+            for func_name in dir(class_or_func):
+                if func_name.startswith('test_'):
+                    yield(str(class_or_func), func_name)
+        elif inspect.isfunction(class_or_func):
+            yield None, str(class_or_func)
+
+
 class TestRunner:
     using_django = False
 
@@ -100,6 +114,7 @@ class TestRunner:
                 with open(file) as f:
                     content = f.read()
                 tests = list(_get_items(content, self.using_django))
+                # tests = list(_get_items_2(file))
                 files_changed = True
             else:
                 tests = file_info.get('tests', [])
