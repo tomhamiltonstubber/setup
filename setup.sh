@@ -9,7 +9,7 @@ sudo add-apt-repository ppa:peek-developers/stable -y
 
 sudo apt-get update &&
 sudo apt-get install -y \
-python3.9 python3.9-dev python3-pip \
+python3.9 python3.9-dev python3-pip python3-distutils python3.9-distutils \
 google-chrome-stable xclip git gh sublime-text vim unzip \
 libjpeg-dev libmemcached-dev postgresql-client postgresql postgresql-server-dev-14 \
 postgresql-contrib redis-server libfreetype6-dev libffi-dev \
