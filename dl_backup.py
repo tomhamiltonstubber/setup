@@ -34,6 +34,12 @@ OPTS = {
         'reset_db': './scripts/resetdb.sh',
         'backup_bucket': '',
     },
+    'hermes': {
+        'app': 'tc-hermes',
+        'db_name': 'tchubspot',
+        'reset_db': 'make reset-db',
+        'backup_bucket': '',
+    },
 }
 
 

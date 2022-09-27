@@ -30,6 +30,7 @@ import configparser
 PROJECT_DIRS = {
     'TutorCruncher2': ['TutorCruncher/'],
     'ventilator': ['src/', 'tests/'],
+    'hermes': ['src/', 'tests/'],
     'find-a-tutor': ['tcfat/', 'tests/'],
     'tc-virus-checker': ['tc_av/', 'tests/'],
     'SalsaVerde': ['SalsaVerde/'],
