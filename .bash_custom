@@ -59,15 +59,10 @@ esac
 
 # Tools
 alias clear_logs="sudo rm -v /var/log/*.log* /var/log/syslog*"
+alias hibernate="systemctl hibernate"
 
 # Python shortcuts
 alias dpyc="find ../ -name '*.pyc' -delete"
-
-# Jekyll shortcuts
-alias js="bundle exec jekyll serve"
-alias jsq="bundle exec jekyll serve --config _config.yml,_quick_config.yml"
-
-alias tc="cd ~/repos/tutorcruncher.com/ && source env/bin/activate"
 
 # Django Shortcuts
 alias src="source env/bin/activate"
