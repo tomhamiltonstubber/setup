@@ -13,24 +13,24 @@ from requests.auth import HTTPBasicAuth
 from subprocess import run, PIPE, CalledProcessError
 
 
-def pull(origin, remote_branch_name, local_branch_name):
+def pull(origin, remote_branch_name, local_branch_name, *args):
     p = run(['git', 'branch'], check=True, stdout=PIPE, universal_newlines=True)
     branches = {b.strip(' *') for b in p.stdout.split('\n')}
     default_branch = re.search(r'^\*\s+(\w+)', p.stdout, flags=re.M).group(1)
     if local_branch_name in branches:
-        run(['git', 'checkout', default_branch], check=True)
+        run(['git', 'checkout', local_branch_name], check=True)
         run(['git', 'branch', '-D', local_branch_name], check=True)
-    run(['git', 'fetch', origin, '{}:{}'.format(remote_branch_name, local_branch_name)], check=True)
+    run(['git', 'fetch', origin, '{}:{}'.format(remote_branch_name, local_branch_name), *args], check=True)
     run(['git', 'checkout', local_branch_name], check=True)
 
 
-def push(origin, remote_branch_name, local_branch_name):
-    run(['git', 'push', origin, '{}:{}'.format(local_branch_name, remote_branch_name)], check=True)
+def push(origin, remote_branch_name, local_branch_name, *args):
+    run(['git', 'push', origin, '{}:{}'.format(local_branch_name, remote_branch_name), *args], check=True)
 
 
 def main():
-    if not 2 <= len(sys.argv) <= 3:
-        print('usage: git ppr <pull request id> [pull/push]')
+    if len(sys.argv) < 2:
+        print('usage: git ppr <pull request id> <[pull]/push>')
         return 1
 
     pr_id = int(sys.argv[1])
@@ -45,18 +45,28 @@ def main():
     r = requests.get('https://api.github.com/repos/{}/pulls/{}'.format(repo, pr_id), auth=auth)
     r.raise_for_status()
     data = r.json()
+    pr_number = data['number']
     print('Pull Request: \x1b[1;36m{title} #{number}\x1b[0m\n'.format(**data))
     head = data['head']
     remote_branch_name = head['ref']
-    local_branch_name = '{}-{}'.format(head['user']['login'], remote_branch_name)
+    local_branch_name = '{}-{}'.format(pr_number, remote_branch_name)
     # could use head['repo']['git_url'] here
     origin = head['repo']['ssh_url']
 
     try:
-        if sys.argv[2].lower() == 'push' if len(sys.argv) == 3 else False:
-            push(origin, remote_branch_name, local_branch_name)
+        pull_push = sys.argv[2].lower()
+        if pull_push in ['pull', 'push']:
+            func = pull_push
+            extra_args = sys.argv[3:]
         else:
-            pull(origin, remote_branch_name, local_branch_name)
+            func = 'pull'
+            extra_args = sys.argv[2:]
+    except IndexError:
+        func = 'pull'
+        extra_args = []
+
+    try:
+        eval(func)(origin, remote_branch_name, local_branch_name, *extra_args)
     except CalledProcessError as e:
         print('error executing command: "{}"'.format(' '.join(e.cmd)))
         return 1
