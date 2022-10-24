@@ -40,7 +40,7 @@ import subprocess
 import pytest
 import re
 
-re_def_match = re.compile('\n    def (test_.*?)\(self.*?\)\:', re.DOTALL)
+re_def_match = re.compile('\n    def (test_.*?)\((?:|\n\s+)self(?:,|\))', re.DOTALL)
 re_func_match = re.compile('\n    def (test_.*?)\(.*?\)\:', re.DOTALL)
 re_classes_match = re.compile(r'class .*?(?:\n{3}|\n$)', re.DOTALL)
 re_cls_match = re.compile(r'class (.*?)\(')
