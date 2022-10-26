@@ -14,31 +14,26 @@ OPTS = {
         'app': 'tutorcruncher',
         'db_name': 'tutorcruncher2',
         'reset_db': 'make reset-db',
-        'backup_bucket': 'tutorcruncher-db-backups',
     },
     'SalsaVerde': {
         'app': 'salsaverde',
         'db_name': 'salsaverde',
         'reset_db': './scripts/resetdb.sh',
-        'backup_bucket': '',
     },
     'blog.brookehouse.com': {
         'app': 'brooke-house-blog',
         'db_name': 'brookehouseblog',
         'reset_db': './scripts/resetdb.sh',
-        'backup_bucket': '',
     },
     'sunshine-packages': {
         'app': 'sunshine-packages',
         'db_name': 'sunshine',
         'reset_db': './scripts/resetdb.sh',
-        'backup_bucket': '',
     },
     'hermes': {
         'app': 'tc-hermes',
         'db_name': 'tchubspot',
         'reset_db': 'make reset-db',
-        'backup_bucket': '',
     },
 }
 
@@ -52,7 +47,7 @@ def _get_id(default_id, available_ids):
         _get_id(default_id, available_ids)
 
 
-def main(db_id, dont_upload, path, app, db_name, reset_db, backup_bucket):
+def main(db_id, dont_upload, path, app, db_name, reset_db):
     output = subprocess.run(f'heroku pg:backups -a {app}', shell=True, stdout=subprocess.PIPE)
     output = output.stdout.decode()
     lines = set(re.findall(r'(.*?)  ((?:202|201).*?) .*?\n', output))
