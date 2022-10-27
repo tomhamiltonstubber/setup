@@ -7,6 +7,8 @@ export HISTFILESIZE=-1
 
 # Avoid succesive duplicates in the bash command history.
 export HISTCONTROL=ignoreboth:erasedups
+
+# Ignoring these commands in the history so you don't accidentally use them twice.
 export HISTIGNORE='git stash pop:git reset HEAD~1'
 
 # Append commands to the bash command history file (~/.bash_history)
@@ -59,17 +61,15 @@ esac
 
 # Tools
 alias clear_logs="sudo rm -v /var/log/*.log* /var/log/syslog*"
-alias hibernate="systemctl hibernate"
 
 # Python shortcuts
-alias dpyc="find ../ -name '*.pyc' -delete"
+alias pipr="pip install -r requirements.txt"
 
 # Django Shortcuts
 alias src="source env/bin/activate"
 alias rs="python manage.py runserver"
 alias rw="python manage.py rqworker high default low"
 alias migrate="python manage.py migrate"
-alias pipr="pip install -r requirements.txt"
 alias lsh="python manage.py shell_plus"
 alias hsh="heroku run python manage.py shell_plus"
 

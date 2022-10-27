@@ -3,13 +3,25 @@
 [push]
     default = simple
 [alias]
+    # For force pushing, it checks that you have fetched the latest changes first
     pushf = push --force-with-lease
+
+    # When you want to amend the commit but don't need to edit the commit message
     commend = commit -a --amend --no-edit
+
+    # A prettier git log
     log2 = log --abbrev-commit --format=format:\"%C(bold blue)%h%C(reset) - %C(white)%s%C(reset)\" --max-count=10
-    branch2 = for-each-ref --count=15 --sort=-committerdate refs/heads/ --format='%(HEAD) %(align:40,left)%(color:yellow)%(refname:short)%(color:reset)%(end) (%(color:green)%(committerdate:relative)%(color:reset)) %(contents:subject)'
+
+    # Creates the PR using the github cli. Also give you the option of filling in the PR description from a template
+    pr-create = gh pr create
+
+    # These three together publish the branch whenever you push, creating it on GitHub if it doesn't exist, then uses pr-create
     branch-name = rev-parse --abbrev-ref HEAD
     force-publish = "! git push --set-upstream origin $(git branch-name)"
-    pushp = "! if [ \"$(git branch-name)\" != \"master\" ]; then git force-publish; else echo 'on master, not publishing' && exit 1; fi && gh pr create"
-    branchmin = for-each-ref --count=30 --sort=-committerdate refs/heads/ --format='%(refname:short),%(contents:subject)'
+    pushp = "! if [ \"$(git branch-name)\" != \"master\" ]; then git force-publish; else echo 'on master, not publishing' && exit 1; fi && pr-create"
+
+    # Runs the pull_pull_request script. Replace /repos/ with whatever dir you use to store code
     ppr = "!f() { ~/repos/pull_pull_request.py $@; }; f"
+
+    # For those fingers that run too fast.
     puhs = push

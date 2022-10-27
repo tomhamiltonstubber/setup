@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """
-pull from and pushing to other people's pull requests
+Allows you to push or pull from other peoples' branches.
 
-(might require an auth key for private repos)
+Usage is like
+
+python pull_pull_request.py <pull request id> <[pull]/push> <any other args>
 """
 import os
 import re

@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+"""
+Outputs a list of branches that then give you a choice of which one to checkout by index
+"""
+
 import subprocess
 import sys
 import re

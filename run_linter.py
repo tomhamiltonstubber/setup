@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 My tool for running the linter for Python projects. To use best, I recommend that you add this file to 
 the base dir that you store your code in. Then create an alias in your bash for `pylint=python ~/code/run_linter.py`.
@@ -16,38 +17,44 @@ args I use for all Python projects of `-S -l 120`.
 """
 
 import argparse
-from datetime import datetime
-from glob import glob
 import json
 import os
+import re
 import subprocess
+from datetime import datetime
+from glob import glob
+from pathlib import Path
 
 from flake8.api import legacy as flake8
 import black
 import configparser
 
 
+parser = argparse.ArgumentParser(description='Run linter with flake8.')
+parser.add_argument('-r', dest='force_rebuild', action='store_true', default=False, help='Force rebuild of flake8 info file')
+
+
 PROJECT_DIRS = {
     'TutorCruncher2': ['TutorCruncher/'],
-    'ventilator': ['src/', 'tests/'],
     'hermes': ['src/', 'tests/'],
     'find-a-tutor': ['tcfat/', 'tests/'],
     'tc-virus-checker': ['tc_av/', 'tests/'],
     'SalsaVerde': ['SalsaVerde/'],
     'TCIntercom': ['tcintercom/', 'tests/'],
-    'dundjeon-finder': ['DungeonFinder/'],
     'sunshine-packages': ['SunshinePackages/'],
     'TCHubspot': ['tc_hs/', 'tests/'],
     'morpheus': ['src/', 'tests/'],
-    'main-platform': ['src/', 'tests/'],
 }
+
+
+debug_re = re.compile(r'(?:\n|    )debug\(')
+data_dir = Path(os.path.dirname(__file__)) / '.data'
 
 
 class Linter:
     def __init__(self, force_rebuild, *args):
         self.extra_args = list(args)
         self.project_dir = os.getcwd().split('/')[-1]
-        self.linter_info_path = f'../.data/{self.project_dir}_linter_info.json'
         self.force_rebuild = force_rebuild
         config = configparser.ConfigParser()
         config.read('setup.cfg')
@@ -56,6 +63,10 @@ class Linter:
             self.f8_config['ignore'] = ['E402'] + self.f8_config['ignore'].split(', ')
             self.f8_config['exclude'] = [i for i in self.f8_config.get('exclude', '').replace('\n', ',').split(',') if i]
         self.now = datetime.now().timestamp()
+
+    @property
+    def linter_info_path(self):
+        return data_dir / f'{self.project_dir}_linter_info.json'
 
     def _check_update_files(self, files_info):
         """
@@ -79,6 +90,8 @@ class Linter:
         if self.force_rebuild:
             files_info = {}
         else:
+            if not data_dir.exists():
+                data_dir.mkdir()
             try:
                 with open(self.linter_info_path) as f:
                     files_info = json.load(f)
@@ -90,7 +103,7 @@ class Linter:
         debug_files = []
         for file in files_to_check:
             with open(file) as f:
-                if '    debug(' in f.read():
+                if debug_re.search(f.read()):
                     debug_files.append(file)
         if debug_files:
             print('😴 Debug found in the following files:\n  ' + '\n     '.join(debug_files))
@@ -114,8 +127,6 @@ class Linter:
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Run linter with flake8.')
-    parser.add_argument('-r', dest='force_rebuild', action='store_true', default=False, help='Force rebuild of flake8 info file')
     parsed, extra_args = parser.parse_known_args()
     runner = Linter(parsed.force_rebuild, *extra_args)
     runner.run()
