@@ -20,7 +20,7 @@ def pull(origin, remote_branch_name, local_branch_name, *args):
     branches = {b.strip(' *') for b in p.stdout.split('\n')}
     default_branch = re.search(r'^\*\s+(\w+)', p.stdout, flags=re.M).group(1)
     if local_branch_name in branches:
-        run(['git', 'checkout', local_branch_name], check=True)
+        run(['git', 'checkout', 'master'], check=True)
         run(['git', 'branch', '-D', local_branch_name], check=True)
     run(['git', 'fetch', origin, '{}:{}'.format(remote_branch_name, local_branch_name), *args], check=True)
     run(['git', 'checkout', local_branch_name], check=True)
@@ -41,9 +41,11 @@ def main():
     assert m, 'repo and username not found in "git remote -v":' + repr(p.stdout)
     repo = m.group(1)
     auth = None
+    debug(repo)
     username_token = os.getenv('GITHUB_USERNAME_TOKEN')
     if username_token:
         auth = HTTPBasicAuth(*username_token.split(':', 1))
+    debug('https://api.github.com/repos/{}/pulls/{}'.format(repo, pr_id), auth)
     r = requests.get('https://api.github.com/repos/{}/pulls/{}'.format(repo, pr_id), auth=auth)
     r.raise_for_status()
     data = r.json()
