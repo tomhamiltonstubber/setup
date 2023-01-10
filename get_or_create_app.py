@@ -1,3 +1,11 @@
+"""
+Tool to launch or go to a program.
+Takes app_name as an arg.
+- If the program is open but you aren't focussed on it, then focus on the window
+- If the program is open and you are focussed on it, then cycle to the next window of that program being open (if so)
+- Launches the app if not open
+"""
+
 import sys
 import subprocess
 import time
@@ -22,12 +30,14 @@ def run():
     if len(sys.argv) < 2:
         print('usage: ./get_or_create_app.py <app_name>')
         return 1
-    search_name = launch_name = focus_name = sys.argv[1]
+    search_name = launch_name = sys.argv[1]
+
+    # Some apps have different names when launched than when calling them.
     if search_name == 'chrome':
         launch_name = 'google-chrome'
     elif search_name == 'java':
         launch_name = 'pycharm-professional'
-        focus_name = 'jetbrains-pycharm'
+
     open_windows = sorted(list(matching_open_windows(search_name)))
     if open_windows:
         # Check to see if the window is already focussed.
