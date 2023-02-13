@@ -1,43 +1,84 @@
-wget -qO - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
-sudo sh -c 'echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
-echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
-sudo apt-add-repository https://cli.github.com/packages -y
-sudo add-apt-repository ppa:deadsnakes/ppa -y
-sudo add-apt-repository ppa:peek-developers/stable -y
+"""
+Last configured for 22.10 on 13/02/2023
+"""
 
-sudo apt-get update &&
-sudo apt-get install -y \
-python3.9 python3.9-dev python3-pip python3-distutils python3.9-distutils \
-google-chrome-stable xclip git gh sublime-text vim unzip \
-libjpeg-dev libmemcached-dev postgresql-client postgresql postgresql-server-dev-14 \
-postgresql-contrib redis-server libfreetype6-dev libffi-dev \
-curl gnome-tweaks chrome-gnome-shell peek python3-virtualenv
+# Dependencies
 
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt update
+sudo apt install -y \
+build-essential libssl-dev zlib1g-dev \
+libbz2-dev libreadline-dev libsqlite3-dev curl \
+libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 
-sudo apt-get install yarn npm -y
+# Tools
 
-sudo pip install virtualenv awscli
-sudo pip3 install devtools
+sudo apt install -y git curl
+
+# Python
+
+curl https://pyenv.run | bash
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+pyenv install 3.9
+sudo apt install python3-pip
+
+# Redis
+
+sudo snap install redis
+
+# Postgresql
+
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo apt update
+sudo apt -y install postgresql-15 postgresql-server-dev-15
+
+# Google chrome
+
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo dpkg -i google-chrome-stable_current_amd64.deb
+rm google-chrome-stable_current_amd64.deb
+
+# Other programs
+
+snap install sublime-text --classic
+sudo apt install peek
 sudo snap install micro --classic
 sudo snap install spotify
 sudo snap install heroku --classic
 sudo snap install pycharm-professional --classic
 sudo snap install slack --classic
+sudo pip3 install virtualenv awscli devtools
+sudo apt install gh xclip
+
+# Yarn/NPM
+
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt update
+sudo apt install yarn npm -y
+
+# Generate RSA key
 
 ssh-keygen -t rsa -b 4096 -C "tomhamiltonstubber@gmail.com"
 ssh-add ~/.ssh/id_rsa
 xclip -sel clip < ~/.ssh/id_rsa.pub
-gpg --full-generate-key
-gpg --list-secret-keys --keyid-format LONG
+echo "RSA key copied to clipboard. Paste into https://github.com/settings/keys then press a key to continue"
+read -n 1 -s
 
-cd ~/
-mkdir repos
-cd repos/
-git clone git@github.com:tutorcruncher/TutorCruncher2 && \
-git clone git@github.com:tutorcruncher/socket-frontend && \
-git clone git@github.com:tutorcruncher/tutorcruncher.com && \
-git clone git@github.com:tomhamiltonstubber/setup .
+# Clone repos
+
+git clone git@github.com:tomhamiltonstubber/setup repos
+git clone git@github.com:tutorcruncher/TutorCruncher2 repos/TutorCruncher2
+git clone git@github.com:tutorcruncher/tutorcruncher.com  repos/tutorcruncher.com
+
+# Update .bashrc with custom files
+
+echo -e "\nif [ -f ~/repos/.bash_custom ]; then\n  . ~/repos/.bash_custom\nfi" >> .bashrc
+
+# Add .gitconfig file
+
+touch ".gitconfig"
+echo -e "[user]\n\tname = Tom Hamilton Stubber\n\temail = tomhamiltonstubber@gmail.com\n[include]\n\tpath = ~/repos/.git_custom" >> .gitconfig

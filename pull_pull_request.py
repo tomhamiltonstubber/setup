@@ -41,11 +41,9 @@ def main():
     assert m, 'repo and username not found in "git remote -v":' + repr(p.stdout)
     repo = m.group(1)
     auth = None
-    debug(repo)
     username_token = os.getenv('GITHUB_USERNAME_TOKEN')
     if username_token:
         auth = HTTPBasicAuth(*username_token.split(':', 1))
-    debug('https://api.github.com/repos/{}/pulls/{}'.format(repo, pr_id), auth)
     r = requests.get('https://api.github.com/repos/{}/pulls/{}'.format(repo, pr_id), auth=auth)
     r.raise_for_status()
     data = r.json()
