@@ -14,26 +14,31 @@ OPTS = {
         'app': 'tutorcruncher',
         'db_name': 'tutorcruncher2',
         'reset_db': 'make reset-db',
+        'list_file': 'tc2_db_restore.list',
     },
     'SalsaVerde': {
         'app': 'salsaverde',
         'db_name': 'salsaverde',
         'reset_db': './scripts/resetdb.sh',
+        'list_file': None,
     },
     'blog.brookehouse.com': {
         'app': 'brooke-house-blog',
         'db_name': 'brookehouseblog',
         'reset_db': './scripts/resetdb.sh',
+        'list_file': None,
     },
     'sunshine-packages': {
         'app': 'sunshine-packages',
         'db_name': 'sunshine',
         'reset_db': './scripts/resetdb.sh',
+        'list_file': None,
     },
     'hermes': {
         'app': 'tc-hermes',
         'db_name': 'tchubspot',
         'reset_db': 'make reset-db',
+        'list_file': None,
     },
 }
 
@@ -47,7 +52,7 @@ def _get_id(default_id, available_ids):
         _get_id(default_id, available_ids)
 
 
-def main(db_id, dont_upload, path, app, db_name, reset_db):
+def main(db_id, dont_upload, path, app, db_name, reset_db, list_file):
     output = subprocess.run(f'heroku pg:backups -a {app}', shell=True, stdout=subprocess.PIPE)
     output = output.stdout.decode()
     lines = set(re.findall(r'(.*?)  ((?:202|201).*?) .*?\n', output))
@@ -88,7 +93,10 @@ def main(db_id, dont_upload, path, app, db_name, reset_db):
     subprocess.run(reset_db, shell=True)
     print('Restoring DB')
     start = datetime.now()
-    subprocess.run(f'pg_restore --clean --no-acl --no-owner -h localhost -U postgres -d {db_name} {file_name} -j12', shell=True)
+    if list_file:
+        subprocess.run(f'pg_restore -L {list_file} --clean --no-acl --no-owner -h localhost -U postgres -d {db_name} {file_name} -j12', shell=True)
+    else:
+        subprocess.run(f'pg_restore --clean --no-acl --no-owner -h localhost -U postgres -d {db_name} {file_name} -j12', shell=True)
     print(f'Restored DB in {(datetime.now() - start).total_seconds()} seconds')
 
 
@@ -98,4 +106,4 @@ if __name__ == '__main__':
     kwargs, _ = parser.parse_known_args()
     path = os.getcwd()
     opts = OPTS[path.split('/')[-1]]
-    main(kwargs.db, True, path,**opts)
+    main(kwargs.db, True, path, **opts)

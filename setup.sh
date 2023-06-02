@@ -24,9 +24,11 @@ sudo apt install -y git curl
 
 # Install python3.10
 # This may need changed for different versions. Also, check to see if the deadsnakes PPA has the correct version first.
-wget https://www.python.org/ftp/python/3.10.6/
-tar –xf python-3.10.*.tgz
-sudo make –j $(nproc)
+wget -c https://www.python.org/ftp/python/3.10.11/Python-3.10.11.tar.xz
+tar -Jxf Python-3.10.11.tar.xz
+cd Python-3.11.0/
+./configure --enable-optimizations
+sudo make -j8
 sudo make install
 sudo apt install python3-pip
 
