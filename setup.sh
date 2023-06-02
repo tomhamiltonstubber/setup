@@ -1,6 +1,12 @@
 """
-Last configured for 22.10 on 13/02/2023
+Last configured for 23.04 on 03/05/2023
 """
+
+# Google chrome
+
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo dpkg -i google-chrome-stable_current_amd64.deb
+rm google-chrome-stable_current_amd64.deb
 
 # Dependencies
 
@@ -16,13 +22,17 @@ sudo apt install -y git curl
 
 # Python
 
-curl https://pyenv.run | bash
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-pyenv install 3.9
+# Install python3.10
+# This may need changed for different versions. Also, check to see if the deadsnakes PPA has the correct version first.
+wget https://www.python.org/ftp/python/3.10.6/
+tar –xf python-3.10.*.tgz
+sudo make –j $(nproc)
+sudo make install
 sudo apt install python3-pip
+
+# Then adding deadsnakes for the other python versions
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt install python3.11 python3.11-dev
 
 # Redis
 
@@ -34,12 +44,6 @@ sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo apt update
 sudo apt -y install postgresql-15 postgresql-server-dev-15
-
-# Google chrome
-
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo dpkg -i google-chrome-stable_current_amd64.deb
-rm google-chrome-stable_current_amd64.deb
 
 # Other programs
 
@@ -82,3 +86,7 @@ echo -e "\nif [ -f ~/repos/.bash_custom ]; then\n  . ~/repos/.bash_custom\nfi" >
 
 touch ".gitconfig"
 echo -e "[user]\n\tname = Tom Hamilton Stubber\n\temail = tomhamiltonstubber@gmail.com\n[include]\n\tpath = ~/repos/.git_custom" >> .gitconfig
+
+# Create the .data dir for tests/linting
+
+mkdir repos/.data
