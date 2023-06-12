@@ -4,7 +4,7 @@ Allows you to push or pull from other peoples' branches.
 
 Usage is like
 
-python pull_pull_request.py <pull request id> <[pull]/push> <any other args>
+python pull_pull_request.py <pull request id/push> <any other args>
 """
 import os
 import re
@@ -31,11 +31,23 @@ def push(origin, remote_branch_name, local_branch_name, *args):
 
 
 def main():
-    if len(sys.argv) < 2:
-        print('usage: git ppr <pull request id> <[pull]/push>')
+    if len(sys.argv) != 2:
+        print('usage: git ppr <pull request id/push>')
         return 1
 
-    pr_id = int(sys.argv[1])
+    first_arg = sys.argv[1]
+    try:
+        pr_id = int(first_arg)
+    except ValueError:
+        if sys.argv[1].lower() == 'push':
+            p = run(['git', 'branch', '--show-current'], check=True, stdout=PIPE)
+            pr_id = p.stdout.decode().split('-')[0]
+            func = 'push'
+        else:
+            raise
+    else:
+        func = 'pull'
+
     p = run(['git', 'remote', '-v'], check=True, stdout=PIPE, universal_newlines=True)
     m = re.search(r'github.com:([\w\-]+/[\w\-]+)', p.stdout)
     assert m, 'repo and username not found in "git remote -v":' + repr(p.stdout)
@@ -54,19 +66,7 @@ def main():
     local_branch_name = '{}-{}'.format(pr_number, remote_branch_name)
     # could use head['repo']['git_url'] here
     origin = head['repo']['ssh_url']
-
-    try:
-        pull_push = sys.argv[2].lower()
-        if pull_push in ['pull', 'push']:
-            func = pull_push
-            extra_args = sys.argv[3:]
-        else:
-            func = 'pull'
-            extra_args = sys.argv[2:]
-    except IndexError:
-        func = 'pull'
-        extra_args = []
-
+    extra_args = sys.argv[2:]
     try:
         eval(func)(origin, remote_branch_name, local_branch_name, *extra_args)
     except CalledProcessError as e:
