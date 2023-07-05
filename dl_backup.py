@@ -14,7 +14,7 @@ OPTS = {
         'app': 'tutorcruncher',
         'db_name': 'tutorcruncher2',
         'reset_db': 'make reset-db',
-        'list_file': 'tc2_db_restore.list',
+        'list_file': None,
     },
     'SalsaVerde': {
         'app': 'salsaverde',

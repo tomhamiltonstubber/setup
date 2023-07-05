@@ -44,6 +44,7 @@ PROJECT_DIRS = {
     'sunshine-packages': ['SunshinePackages/'],
     'TCHubspot': ['tc_hs/', 'tests/'],
     'morpheus': ['src/', 'tests/'],
+    'hermes_v2': ['app/', 'tests/'],
 }
 
 

@@ -31,10 +31,6 @@ def push(origin, remote_branch_name, local_branch_name, *args):
 
 
 def main():
-    if len(sys.argv) != 2:
-        print('usage: git ppr <pull request id/push>')
-        return 1
-
     first_arg = sys.argv[1]
     try:
         pr_id = int(first_arg)
@@ -44,7 +40,7 @@ def main():
             pr_id = p.stdout.decode().split('-')[0]
             func = 'push'
         else:
-            raise
+            raise RuntimeError('This first arg should either be the PR ID (if pulling) or "push", if pushing')
     else:
         func = 'pull'
 
